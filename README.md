@@ -142,6 +142,47 @@ This creates a Python virtual environment and installs:
   - Direct commits to `main` blocked (must use PRs)
   - Docker test: builds image and runs tests before commit (when `Dockerfile` exists)
 
+## Running a Cohort
+
+This repository is the **baseline** and is marked as a GitHub template
+repository. It holds course content only and never contains student data.
+Each cohort runs in its own repository created from this one.
+
+### Create a cohort repository
+
+1. Create the cohort repo, named with the start date of the cohort:
+
+   ```bash
+   gh repo create LabSoft-AI/Agentic-SDLC-Software-Factory-<YYYY-MM-DD> \
+     --template LabSoft-AI/Agentic-SDLC-Software-Factory \
+     --private
+   ```
+
+2. Protect `main` in the cohort repo: restrict pushes and merges to the
+   instructor, and block force-push and deletion.
+3. Fill in the cohort-specific files, in the cohort repo only:
+   - `COURSE-TRACKER.md` (location, time, dates, leaderboard, attendance,
+     student directory)
+   - `modules/*/ASSIGNMENTS.md` (one row per student)
+   - `survey/COURSE-SURVEY.md` (survey form link)
+4. Update `github_url` in `docs/conf.py` and the course documentation link
+   in this README to point to the cohort repo.
+
+### Keep the baseline clean
+
+- Never commit student names, GitHub handles, grades, or survey results to
+  the baseline.
+- Improvements made during a cohort go to the baseline through a pull
+  request, then are brought into running cohort repos.
+- A repo created from a template shares no git history with the baseline, so
+  a merge does not work. Use cherry-pick instead:
+
+  ```bash
+  git remote add baseline git@github.com:LabSoft-AI/Agentic-SDLC-Software-Factory.git
+  git fetch baseline
+  git cherry-pick <commit>
+  ```
+
 ## References
 
 - [Harness Engineering (Fowler)](https://martinfowler.com/articles/harness-engineering.html)
