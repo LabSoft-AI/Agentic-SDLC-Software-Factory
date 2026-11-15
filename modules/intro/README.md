@@ -57,11 +57,11 @@ follows it reliably.
 | 3. Requirements | Requirements agent | User stories, DDD, Pareto prioritization |
 | 4. CI/CD | CI/CD agent | GitHub Actions, SAM deploy, test gates |
 | 5. TDD/BDD | TDD/BDD agent | Multi-agent test system (RED-GREEN-REFACTOR) |
-| 6. Final Project | All five agents | Team project, end to end |
+| 6. Final Project | All five agents | Individual kata, end to end |
 
 Modules 1–5 are individual work and each produces one specialized agent.
-Module 6 is a team project where you combine all five agents to build a
-real application.
+Module 6 is an individual project where you combine all five agents to
+complete a selected kata.
 
 ### The pattern
 
@@ -246,11 +246,11 @@ project through it.
 | 5–6 | Module 3: Requirements (agent + kata stories) |
 | 7–8 | Module 4: CI/CD (agent + pipeline exercise) |
 | 9–12 | Module 5: TDD/BDD (multi-agent system + kata implementation) |
-| 13–18 | Module 6: Final Project (team project, all agents) |
+| 13–18 | Module 6: Final Project (individual kata, all agents) |
 | 19–21 | Buffer, presentations, retrospective |
 
-In Modules 1–5 you choose your own kata and submit PRs for review. Module 6
-is team work.
+In Modules 1–5 you submit PRs for review. In Module 6 you use all five
+agents to complete a selected kata.
 
 ### 7.2 Prerequisites
 
@@ -291,6 +291,11 @@ destination.
 - [Harness Engineering (Fowler)](https://martinfowler.com/articles/harness-engineering.html)
 - [Context Engineering (Fowler)](https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html)
 - [Spec-Driven Development (Fowler)](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html)
+- [What Is Loop Engineering? (IBM)](https://www.ibm.com/think/topics/loop-engineering)
+- [Loop Engineering: Building Blocks, Adoption, and Impact (arXiv 2608.21884)](https://arxiv.org/abs/2608.21884)
+- [Stop Hand-Holding Your Coding Agent: Engineering the Loops that Replace Step-by-Step Prompting (arXiv 2607.00038)](https://arxiv.org/abs/2607.00038)
+- [What Is an Agentic Software Factory? (Sonar)](https://www.sonarsource.com/resources/library/what-is-an-agentic-software-factory/)
+- [Architecting an Autonomous Software Factory: End-to-End Agentic Delivery (Google codelab)](https://codelabs.developers.google.com/codelabs/software-factory-end-to-end)
 - [Kiro CLI](https://kiro.dev/docs/cli/)
 - [Pi](https://pi.dev)
 - Slides: [slides/intro.md](slides/intro.md)

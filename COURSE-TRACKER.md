@@ -17,10 +17,10 @@ Location: _TBD_ | Time: _TBD_
 | Component | Points | Details |
 |-----------|--------|---------|
 | Modules (M1–M5) | 25 | 5 pts per module (merged PR) |
-| Project | 45 | Team project using all agents |
+| Project | 45 | Final project (kata) using all agents |
 | Test | 30 | Written/practical exam |
 
-> ⚠️ **Prerequisite:** All 5 module PRs must be merged before you can be assigned to a team for the project.
+> ⚠️ **Prerequisite:** All 5 module PRs must be merged before you can be assigned a kata for the project.
 
 ## Week 1
 

@@ -471,5 +471,5 @@ Write the test first. Let it guide your implementation.
 One test at a time. Commit on GREEN. Refactor fearlessly.
 
 **Notes:**
-After this module, you have all five agents: Git, Architecture, Requirements, CI/CD, and TDD/BDD. In Module 6, you'll use all of them together as a team to build the final project.
+After this module, you have all five agents: Git, Architecture, Requirements, CI/CD, and TDD/BDD. In Module 6, you'll use all of them together to complete your final project kata.
 The TDD agent is the culmination of everything — it reads stories from Module 3, runs tests in the Docker pipeline from Module 4, and commits via the Git conventions from Module 1. All the modules connect.

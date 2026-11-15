@@ -10,7 +10,7 @@ Agentic SDLC: Building a Software Factory
 
 3-week master's course where students build specialized agents
 that automate each phase of the software development lifecycle, then use
-those agents as a team to build a real serverless application.
+those agents together to build a real application.
 
 .. tip::
    This course is grounded in **Context Engineering**, **Harness Engineering**,
