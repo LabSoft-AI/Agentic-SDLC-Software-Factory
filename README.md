@@ -36,7 +36,7 @@ encode it as context (agent config), harness (guides + sensors) and loops
 (retry until the sensors pass) around an agent (run in Kiro CLI or Pi). The five agents
 together form the stations of the software factory.
 
-See the [Intro slides](modules/intro/) for a deeper dive into these
+See the [Intro](modules/intro/README.md) for a deeper dive into these
 concepts.
 
 📚 **[Course Documentation](https://labsoft-ai.github.io/Agentic-SDLC-Software-Factory/)**
@@ -55,13 +55,13 @@ The course has two parts:
 
 | # | Module | Process Learned | Agent Built |
 |---|--------|-----------------|-------------|
-| 0 | [Intro](modules/intro/) | Context engineering, harness engineering | — |
-| 1 | [Git](modules/module-1-git/) | Branching, commits, PRs, issue tracking | Issue creator, PR creator |
-| 2 | [Software Architecture](modules/module-2-architecture/) | arc42 template, C4 model | Architecture doc generator |
-| 3 | [Software Requirements](modules/module-3-requirements/) | User stories, DDD, Pareto prioritization | Story derivation agent |
-| 4 | [CI/CD](modules/module-4-cicd/) | GitHub Actions, Docker, pipelines | CI/CD pipeline agent |
-| 5 | [TDD/BDD](modules/module-5-tdd-bdd/) | RED-GREEN-REFACTOR, backend-first | TDD/BDD implementation agent |
-| 6 | Final Project | Full lifecycle (individual kata) | All agents from M1–M5 |
+| 0 | [Intro](modules/intro/README.md) | Context engineering, harness engineering | — |
+| 1 | [Git](modules/module-1-git/README.md) | Branching, commits, PRs, issue tracking | Issue creator, PR creator |
+| 2 | [Software Architecture](modules/module-2-architecture/README.md) | arc42 template, C4 model | Architecture doc generator |
+| 3 | [Software Requirements](modules/module-3-requirements/README.md) | User stories, DDD, Pareto prioritization | Story derivation agent |
+| 4 | [CI/CD](modules/module-4-cicd/README.md) | GitHub Actions, Docker, pipelines | CI/CD pipeline agent |
+| 5 | [TDD/BDD](modules/module-5-tdd-bdd/README.md) | RED-GREEN-REFACTOR, backend-first | TDD/BDD implementation agent |
+| 6 | [Final Project](modules/module-6-project/README.md) | Full lifecycle (individual kata) | All agents from M1–M5 |
 
 ## Course Project: Final Project
 
@@ -73,12 +73,12 @@ stations of the factory, from requirements to a deployed result.
 
 | Days | Activity | Deliverable |
 |------|----------|-------------|
-| 1–2 | [Module 1: Git](modules/module-1-git/) | Git agent + practice exercise |
-| 3–4 | [Module 2: Architecture](modules/module-2-architecture/) | Architecture agent + kata design |
-| 5–6 | [Module 3: Requirements](modules/module-3-requirements/) | Story agent + kata backlog |
-| 7–8 | [Module 4: CI/CD](modules/module-4-cicd/) | Deploy agent + pipeline exercise |
-| 9–12 | [Module 5: TDD/BDD](modules/module-5-tdd-bdd/) | Multi-agent TDD system + practice |
-| 13–18 | Module 6: Final Project (individual) | Working app deployed |
+| 1–2 | [Module 1: Git](modules/module-1-git/README.md) | Git agent + practice exercise |
+| 3–4 | [Module 2: Architecture](modules/module-2-architecture/README.md) | Architecture agent + kata design |
+| 5–6 | [Module 3: Requirements](modules/module-3-requirements/README.md) | Story agent + kata backlog |
+| 7–8 | [Module 4: CI/CD](modules/module-4-cicd/README.md) | Deploy agent + pipeline exercise |
+| 9–12 | [Module 5: TDD/BDD](modules/module-5-tdd-bdd/README.md) | Multi-agent TDD system + practice |
+| 13–18 | [Module 6: Final Project](modules/module-6-project/README.md) (individual) | Working app deployed |
 | 19–21 | Buffer / presentations | Demo + retrospective |
 
 ## Assessment
