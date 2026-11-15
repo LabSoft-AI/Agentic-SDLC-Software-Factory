@@ -672,8 +672,8 @@ kiro-cli --tui --agent git-agent
 ```
 
 Each issue should follow the template with proper acceptance criteria.
-Do **not** create an issue for Module 6 (Final Project) — that's a team
-exercise that needs separate planning.
+Do **not** create an issue for Module 6 (Final Project) — that's a
+separate, larger exercise that needs its own planning.
 
 ### Step 3: Create a Branch for the README
 
@@ -699,7 +699,7 @@ Create `README.md` at the repo root with:
 - [ ] Module 3: Software Requirements — user story derivation agent
 - [ ] Module 4: CI/CD — deployment pipeline agent
 - [ ] Module 5: TDD/BDD — multi-agent test system
-- [ ] Module 6: Final Project — team project using all agents
+- [ ] Module 6: Final Project — individual kata using all agents
 ```
 
 ### Step 5: Commit and Push
