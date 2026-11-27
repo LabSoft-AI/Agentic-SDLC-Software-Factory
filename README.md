@@ -89,7 +89,7 @@ The course supports three harnesses. Pick one and use it for every module.
 | Harness | Agent format | Module starters | Documentation |
 |---------|--------------|-----------------|---------------|
 | Kiro CLI | JSON in `.kiro/agents/` | `starter/*-agent.json` | [Kiro CLI docs](https://kiro.dev/docs/cli/) |
-| Pi | Preset file | See Pi docs | [Pi docs](https://pi.dev) |
+| Pi | Preset in `.pi/presets.json` | Preset from `starter/*-agent.json` | [Pi harness guide](docs/pi.md) |
 | OpenCode | Markdown in `.opencode/agents/` | `starter/*-agent.md` | [OpenCode harness guide](docs/opencode.md) |
 
 The context engineering is the same in all three. Only the file format and the
@@ -159,7 +159,7 @@ stations of the factory, from requirements to a deployed result.
 
 - An agent harness installed: [Kiro CLI](https://kiro.dev), [Pi](https://pi.dev), or [OpenCode](https://opencode.ai)
 - Python 3.12+
-- Node 20+
+- Node 20+ (Node 24 for Pi)
 - Java (for PlantUML diagram generation)
 - GitHub account + [GitHub CLI](https://cli.github.com/) (`gh`)
 - Basic knowledge of Python, REST APIs, and React
@@ -190,6 +190,9 @@ This creates a Python virtual environment and installs:
 OpenCode users: install it with
 `curl -fsSL https://opencode.ai/v2/install | bash` and follow the
 [OpenCode harness guide](docs/opencode.md).
+
+Pi users: install Node 24 and Pi 1.0.4, then follow the
+[Pi harness guide](docs/pi.md).
 
 ## Cohorts
 

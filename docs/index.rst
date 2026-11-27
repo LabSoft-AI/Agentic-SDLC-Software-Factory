@@ -33,5 +33,6 @@ those agents together to build a real application.
    :maxdepth: 2
    :caption: Resources
 
+   pi
    opencode
    tracker
