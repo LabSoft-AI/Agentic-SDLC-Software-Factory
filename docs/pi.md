@@ -1,21 +1,26 @@
 # Pi Harness
 
-Pi ([pi.dev](https://pi.dev)) is the second supported harness, next to Kiro CLI
-and OpenCode. Pi itself is minimal: it ships no named agents. A small **preset
-extension** adds them, so a Pi agent config is a JSON preset plus the prompt it
-loads.
+Pi ([pi.dev](https://pi.dev)) is a minimal, extensible agent harness. It ships
+no named agents. A small **preset extension** adds them, so a Pi agent config is
+a JSON preset plus the prompt it loads.
 
-The World monorepo runs its whole agent fleet this way. Its `.pi/` folder keeps
-agent definitions in `.pi/presets.json`, reuses the Kiro prompts and resources
-in place, and adds a permission gate in an `ls-agents` extension. The course
-uses the same preset model. The public Pi preset example supports a model, a
-tool list, and an inline prompt; the World extension adds instruction files,
-resources, context commands, MCP servers, subagents, and an allow/ask/deny gate.
+Pi gives you two options:
+
+- **Public preset extension.** The smallest setup. A preset sets a model, a
+  thinking level, a tool list, and an inline prompt. Start it with
+  `pi --preset <name>` or `/preset`.
+- **Custom extension.** Pi's extension API can add instruction files, resource
+  globs, context commands, per-preset MCP servers, subagents, and a permission
+  gate. This is more work, but it is the same harness engineering the course
+  teaches.
+
+The prompt, tools, and task are the same as in Kiro CLI and OpenCode. Only the
+file format and the extension features change.
 
 ## Install
 
-Pi runs on Node 24. Keep the course's Node 20 install as the default and switch
-with `nvm`:
+Pi runs on Node 22.19 or newer. The course's other tools run on Node 20+, so
+install Node 24 alongside it with `nvm`:
 
 ```bash
 nvm install 24
@@ -24,20 +29,32 @@ npm install -g --ignore-scripts @earendil-works/pi-coding-agent@1.0.4
 pi --version   # 1.0.4
 ```
 
-`--ignore-scripts` is intentional: Pi does not need post-install scripts. The
-World setup targets Pi 1.0.4; do not run `pi update` without rerunning the
-harness tests.
-
-Pi can use any provider. World uses Amazon Bedrock:
+`--ignore-scripts` is intentional: Pi does not need post-install scripts. You
+can also use the installer, which pins its dependencies:
 
 ```bash
-aws sso login --profile <your-sso-profile>
-export AWS_PROFILE=<your-sso-profile>
-export AWS_REGION=eu-central-1
+curl -fsSL https://pi.dev/install.sh | sh
 ```
 
-Without Bedrock, run `/login` inside Pi and pick the provider you have. Use the
-matching `provider` and `model` in the preset.
+The course targets Pi 1.0.4. Do not run `pi update` without rerunning your
+harness checks.
+
+## Choose a provider
+
+Pi supports several provider options:
+
+- **Amazon Bedrock.** Use the AWS default credential chain. Run
+  `aws sso login --profile <profile>`, export `AWS_PROFILE` and `AWS_REGION`,
+  then set `provider` to `amazon-bedrock` and `model` to a model ID available in
+  your account and region.
+- **Subscription or API key.** Run `/login` inside Pi and pick Anthropic,
+  OpenAI, Google, or another supported provider. The stored credential is used
+  by the session.
+- **Custom provider.** Add an endpoint under `models.json` when you need a
+  gateway or a private model.
+
+The course does not require a specific provider. If a preset omits `provider`
+and `model`, Pi keeps the session default.
 
 ## First run
 
@@ -73,22 +90,17 @@ curl -fsSL \
   -o .pi/extensions/preset.ts
 ```
 
-If you have access to the World monorepo, copy its full extension instead:
-
-```bash
-cp -R /path/to/world/.pi/extensions/ls-agents .pi/extensions/
-```
-
-The World extension understands every field in the tables below. The public
-example understands only `provider`, `model`, `thinkingLevel`, `tools`, and
-`instructions`.
+The public example supports `provider`, `model`, `thinkingLevel`, `tools`, and
+`instructions`. For instruction files, resources, context commands, MCP servers,
+subagents, or a permission gate, write your own extension with Pi's extension
+API. Start from the examples in the Pi package.
 
 Optional: set the default provider and model in `.pi/settings.json`:
 
 ```json
 {
   "defaultProvider": "amazon-bedrock",
-  "defaultModel": "global.anthropic.claude-sonnet-4-6"
+  "defaultModel": "<model-id>"
 }
 ```
 
@@ -100,8 +112,6 @@ name. The public example uses an inline prompt:
 ```json
 {
   "git-agent": {
-    "provider": "amazon-bedrock",
-    "model": "global.anthropic.claude-sonnet-4-6",
     "tools": ["read", "grep", "find", "ls", "bash", "edit", "write"],
     "instructions": "You are a Git workflow automation agent. Use `gh` for all GitHub operations and follow the issue, branch, commit, and PR conventions from Module 1."
   }
@@ -110,30 +120,28 @@ name. The public example uses an inline prompt:
 
 Put the full prompt from the module's Kiro starter in `instructions` (the
 `prompt` field of `modules/module-1-git/starter/git-agent.json`). JSON strings
-use `\n` for line breaks.
+use `\n` for line breaks. Add `provider` and `model` only when you want to pin
+them.
 
-With the World extension, keep the prompt in a Markdown file and add resources
-and permissions:
+A custom extension can use a richer schema. For example, it can read the prompt
+from a file and expose resources and tool rules:
 
 ```json
 {
   "git-agent": {
-    "provider": "amazon-bedrock",
-    "model": "global.anthropic.claude-sonnet-4-6",
     "tools": ["read", "grep", "find", "ls", "bash", "edit", "write"],
     "instructionsFiles": [".pi/agents/git-agent.md"],
+    "resourceGlobs": ["docs/**/*.md"],
     "policy": {
-      "allowTools": ["read", "grep", "find", "ls", "bash"],
-      "bash": {
-        "allow": [
-          "^(?!.*--output)git (status|diff|log|show)\\b",
-          "^gh (issue|pr) (list|view)\\b"
-        ]
-      }
+      "allowTools": ["read", "grep", "find", "ls", "bash"]
     }
   }
 }
 ```
+
+The field names are yours to define. This shape is a useful default: the
+extension reads `instructionsFiles` into the system prompt, resolves
+`resourceGlobs`, and checks `policy` before each tool call.
 
 Start the agent:
 
@@ -145,24 +153,21 @@ pi --preset git-agent        # start in the preset
 /session                     # tokens, context, and session stats
 ```
 
-The World extension also adds `/agent swap <name>` (the Kiro habit), `/usage`,
-and `/context`.
-
 The preset's model is the default. A `--model <id>` on the command line or
 `/model` inside the session wins over the preset.
 
 ## What maps from Kiro
 
-| Kiro | Pi public preset | Pi World `ls-agents` |
-|------|------------------|----------------------|
+| Kiro | Pi public preset | Pi custom extension |
+|------|------------------|---------------------|
 | `.kiro/agents/<name>.json` | `.pi/presets.json` entry | Same |
 | `prompt` (inline) | `instructions` string | `instructionsFiles` |
 | `prompt: "file://..."` | Inline the file into `instructions` | `instructionsFiles` |
 | `tools` | `tools` | `tools` |
 | `resources` | No auto-load; name the files in `instructions` | `resourceGlobs` |
-| `allowedTools` | No gate; `tools` limits what the agent can use | `policy.allowTools` |
-| `hooks.postToolUse` | No per-agent hook; put the command in the prompt or a pre-commit hook | Not ported; `contextCommands` run Kiro `userPromptSubmit` hooks before each prompt |
-| `mcpServers` | Project `.pi/mcp.json` or a Pi extension | Per-preset `mcpServers` |
+| `allowedTools` | No gate; `tools` limits what the agent can use | A `policy` gate |
+| `hooks.postToolUse` | No per-agent hook; put the command in the prompt or a pre-commit hook | Run a check after tool calls |
+| `mcpServers` | Project `.pi/mcp.json` | Per-preset `mcpServers` |
 
 The Pi tool names for the course starters are:
 
@@ -180,20 +185,20 @@ prompt and rules from the Kiro starter and turn them into a preset:
 1. Take the `prompt` value from `starter/<name>-agent.json`.
 2. Add a `<name>-agent` entry to `.pi/presets.json` with the mapped tools.
 3. Use `instructions` with the public extension, or save the prompt as
-   `.pi/agents/<name>-agent.md` and use `instructionsFiles` with the World
+   `.pi/agents/<name>-agent.md` and use `instructionsFiles` with a custom
    extension.
 
 Module 5 needs two adjustments:
 
 - The prompt lives in `tdd-bdd-prompt.md`. Inline its contents into
-  `instructions`, or keep it as an instruction file with the World extension.
+  `instructions`, or keep it as an instruction file with a custom extension.
 - `resources` and the `postToolUse` hook have no direct equivalent in the
   public extension. Tell the agent to read `docs/user-stories/**/*.md`, and put
   the exact pytest command in the prompt or a git pre-commit hook.
 
-This is the same trade-off as the [OpenCode harness](opencode.md): the prompt,
-tools, and task stay the same; only the file format and the harness features
-change.
+This is the same trade-off as the [OpenCode harness](opencode.md) and the
+[Kiro harness](kiro.md): the prompt, tools, and task stay the same; only the
+file format and the harness features change.
 
 ## Permissions and safety
 
@@ -203,69 +208,64 @@ Run it with the permissions of a dedicated user or inside a container, and
 review the diffs it produces. See [Pi security](https://pi.dev/docs/latest/security)
 for the trust model and isolation options.
 
-The World `ls-agents` extension adds a gate in front of every tool call:
+A custom extension can add a gate in front of every tool call:
 
-- **allow** - runs without prompting (read-only tools and the preset's allowed
-  `git`/`gh` commands).
-- **ask** - Pi shows `Allow? [Yes/No]`. Declining, or running without an
-  interactive UI, blocks the call.
-- **deny** - blocked immediately. Destructive git is always denied: force push,
-  `reset --hard`, `--no-verify`, and `SKIP=`.
+- **allow** runs without prompting.
+- **ask** shows `Allow? [Yes/No]` and blocks the call when you decline or when
+  there is no interactive UI.
+- **deny** blocks the call immediately.
 
-The gate also always asks for commands whose first word is `rm`, `sudo`,
-`chmod`, `chown`, `dd`, `mkfs`, `kill`, `pkill`, `shutdown`, or `reboot`;
-destructive `git clean`, `restore`, `rm`, `stash drop`/`clear`,
-`branch -D`, `checkout --`; `find -delete`/`-exec`; and any chained command
-(`&&`, `;`, `|`, `$(...)`, `>`). Writes under `.pi/` and `.git/` always ask.
+A useful baseline is to allow read-only tools and the preset's read-only
+`git`/`gh` commands, ask for writes and chained commands, and deny destructive
+git (`--force`, `reset --hard`, `--no-verify`, `SKIP=`). The gate is a speed
+bump, not a sandbox: a wrapper such as `bash -c`, `env`, or `python3 -c` can
+still run something indirectly when the agent may run arbitrary commands.
 
-The always-ask list is a speed bump, not a sandbox. A wrapper such as
-`bash -c`, `env`, or `python3 -c` can still run something indirectly when the
-agent is allowed to run arbitrary commands.
+## What a custom extension can add
 
-## What the World harness adds
+Pi's extension API supports these options:
 
-- **Context commands** - a preset's `contextCommands` run before every prompt
-  and their stdout is added to the context (5 s timeout).
-- **Reference files** - resolved `resourceGlobs` are embedded in the system
-  prompt when they total 200 KB or less; larger sets are listed and the agent
-  reads them on demand.
-- **Subagents** - a preset can start another preset in an isolated context. The
-  child asks for every approval in the parent session and cannot start its own
-  subagent.
-- **/commit** - delegates to the `ls-git` subagent, commits the working tree,
-  takes the issue number from the branch context, and never pushes.
-- **Skills** - Kiro skills load in place and appear as `/skill:<name>`.
-- **MCP per preset** - a preset's MCP servers are registered when you enter it
-  and unregistered when you leave.
-- **Web fetch** - the `fetch` MCP server is added for agents that used
-  `web_fetch` in Kiro.
+- **Context commands** that run before every prompt and add their output to the
+  context.
+- **Reference files** that are embedded in the system prompt or listed for the
+  agent to read on demand.
+- **Subagents** that run a preset in an isolated context and ask for approvals
+  in the parent session.
+- **A commit command** that delegates the commit flow to a Git preset.
+- **MCP per preset**, so switching preset registers only that preset's servers.
+- **A permission gate** with allow, ask, and deny rules.
+
+Pi also supports skills natively and MCP servers from `.pi/mcp.json`. Add a
+server with:
+
+```bash
+pi mcp add -l fetch -- uvx mcp-server-fetch
+```
 
 ## Differences to keep in mind
 
-- Pi needs Node 24, while the rest of the course runs on Node 20+.
+- Pi needs Node 22.19 or newer, while the rest of the course runs on Node 20+.
 - Named agents require a preset extension; plain Pi has no `--preset` flag.
 - Pi has no language-server support, so Kiro's LSP is not available.
 - Pi has no `web_search`; add a fetch MCP server if you need to read web pages,
   or use the `aws` CLI through `bash`.
-- `postToolUse` hooks are not ported to the World harness. Use a prompt rule, a
-  git pre-commit hook, or a Pi extension for a deterministic sensor.
 - The public preset extension has no permission gate and no resource auto-load.
-  Use the World extension if you need those features.
-- The World extension protects `.pi/` and `.git/`: writes there always ask.
+- Pi has no per-agent `postToolUse` hook. Use a prompt rule, a git pre-commit
+  hook, or an extension for a deterministic sensor.
 
 ## Troubleshooting
 
 - **`pi` fails with `enableCompileCache` or another `node:module` error.** You
   are on Node 20. Run `nvm use 24` and try again.
-- **AWS errors or an expired token.** Re-run
-  `aws sso login --profile <your-sso-profile>` and confirm `AWS_PROFILE` and
-  `AWS_REGION` are exported in the current shell.
+- **Provider errors or an expired token.** Re-run `/login`, or refresh your AWS
+  credentials with `aws sso login --profile <profile>` and confirm
+  `AWS_PROFILE` and `AWS_REGION` are exported.
 - **Project resources are skipped.** Run an interactive `/trust` once before
   using print, JSON, or RPC mode.
 - **`Unknown preset`.** Check that `.pi/presets.json` exists at the repository
   root, the name matches a key, and the preset extension loaded.
-- **A preset fails to apply.** With the World extension, an MCP server that
-  cannot register aborts the switch and leaves the previous preset active.
+- **An MCP server fails to start.** Run `/mcp` to see the server's stderr and
+  fix the command in `.pi/mcp.json`.
 
 ## References
 
@@ -273,4 +273,5 @@ agent is allowed to run arbitrary commands.
 - [Pi extensions](https://pi.dev/docs/latest/extensions)
 - [Pi preset example](https://github.com/earendil-works/pi/blob/v1.0.4/packages/coding-agent/examples/extensions/preset.ts)
 - [Pi security](https://pi.dev/docs/latest/security)
-- [Kiro CLI custom agents](https://kiro.dev/docs/cli/custom-agents/configuration-reference/)
+- [Pi MCP servers](https://pi.dev/docs/latest/mcp)
+- [Kiro CLI custom agents](https://kiro.dev/docs/custom-agents/configuration-reference/)

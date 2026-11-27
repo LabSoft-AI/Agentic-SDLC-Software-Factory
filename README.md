@@ -88,7 +88,7 @@ The course supports three harnesses. Pick one and use it for every module.
 
 | Harness | Agent format | Module starters | Documentation |
 |---------|--------------|-----------------|---------------|
-| Kiro CLI | JSON in `.kiro/agents/` | `starter/*-agent.json` | [Kiro CLI docs](https://kiro.dev/docs/cli/) |
+| Kiro CLI | JSON in `.kiro/agents/` | `starter/*-agent.json` | [Kiro harness guide](docs/kiro.md) |
 | Pi | Preset in `.pi/presets.json` | Preset from `starter/*-agent.json` | [Pi harness guide](docs/pi.md) |
 | OpenCode | Markdown in `.opencode/agents/` | `starter/*-agent.md` | [OpenCode harness guide](docs/opencode.md) |
 
@@ -187,12 +187,16 @@ This creates a Python virtual environment and installs:
   - Direct commits to `main` blocked (must use PRs)
   - Docker test: builds image and runs tests before commit (when `Dockerfile` exists)
 
-OpenCode users: install it with
-`curl -fsSL https://opencode.ai/v2/install | bash` and follow the
-[OpenCode harness guide](docs/opencode.md).
+Kiro CLI users: install it with
+`curl -fsSL https://cli.kiro.dev/install | bash` and follow the
+[Kiro harness guide](docs/kiro.md).
 
 Pi users: install Node 24 and Pi 1.0.4, then follow the
 [Pi harness guide](docs/pi.md).
+
+OpenCode users: install it with
+`curl -fsSL https://opencode.ai/v2/install | bash` and follow the
+[OpenCode harness guide](docs/opencode.md).
 
 ## Cohorts
 
