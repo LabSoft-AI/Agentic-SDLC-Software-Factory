@@ -1,8 +1,8 @@
 # Pi Harness
 
-Pi ([pi.dev](https://pi.dev)) is a minimal, extensible agent harness. It ships
-no named agents. A small **preset extension** adds them, so a Pi agent config is
-a JSON preset plus the prompt it loads.
+Pi ([pi.dev](https://pi.dev)) is one of the supported harnesses. It is a
+minimal, extensible harness with no named agents. A small **preset extension**
+adds them, so a Pi agent config is a JSON preset plus the prompt it loads.
 
 Pi gives you two options:
 

@@ -1,7 +1,7 @@
 # Kiro CLI Harness
 
-Kiro CLI ([kiro.dev](https://kiro.dev/docs/cli/)) is the first supported
-harness. An agent is a JSON or Markdown file in `.kiro/agents/`. The file sets
+Kiro CLI ([kiro.dev](https://kiro.dev/docs/cli/)) is one of the supported
+harnesses. An agent is a JSON or Markdown file in `.kiro/agents/`. The file sets
 the system prompt, the tools, the resources, the MCP servers, the hooks, and,
 in current Kiro CLI, the permission rules.
 

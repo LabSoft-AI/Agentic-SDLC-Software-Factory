@@ -1,7 +1,7 @@
 # OpenCode Harness
 
-OpenCode ([opencode.ai](https://opencode.ai/docs/)) is the third supported
-harness. An agent is a Markdown file in `.opencode/agents/`. YAML frontmatter
+OpenCode ([opencode.ai](https://opencode.ai/docs/)) is one of the supported
+harnesses. An agent is a Markdown file in `.opencode/agents/`. YAML frontmatter
 sets the description, mode, model, and permissions. The file body is the system
 prompt.
 
